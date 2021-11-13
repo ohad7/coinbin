@@ -66,7 +66,6 @@ $(document).ready(function() {
 					var wif = keys.wif;
 					var pubkey = keys.pubkey;
 					
-					//var privkeyaes = CryptoJS.AES.encrypt(keys.wif, pass);
 					var privkeyaes = encrypt(keys.wif);
 
 					$("#walletKeys .walletSegWitRS").addClass("hidden");
@@ -373,7 +372,6 @@ $(document).ready(function() {
 		} else {
 			$("#aes256passStatus").removeClass("hidden");
 		}
-		//$("#newPrivKeyEnc").val(CryptoJS.AES.encrypt(coin.wif, $("#aes256pass").val())+'');
 		$("#newPrivKeyEnc").val(encrypt(coin.wif));
 	});
 	
