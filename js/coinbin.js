@@ -8,6 +8,38 @@ $(document).ready(function() {
 
 	var wallet_timer = false;
 
+        var key = [ 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
+
+	function encrypt(text) {
+	  // An example 128-bit key
+
+	  // Convert text to bytes
+	  var textBytes = aesjs.utils.utf8.toBytes(text);
+
+	  var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+	  var encryptedBytes = aesCtr.encrypt(textBytes);
+
+	  // To print or store the binary data, you may convert it to hex
+	  var encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
+
+	  var decrypted = decrypt(encryptedHex);
+	  if (text === decrypted) {
+		console.log('decryption ok');
+	  } else {
+	    alert('decryption error');
+	  }
+	  return encryptedHex;
+	}
+
+	function decrypt(encryptedHex) {
+	  var encryptedBytes = aesjs.utils.hex.toBytes(encryptedHex);
+	  var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+	  var decryptedBytes = aesCtr.decrypt(encryptedBytes);
+
+	  var decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes);
+	  return decryptedText;
+	}
+
 	$("#openBtn").click(function(){
 		var email = $("#openEmail").val().toLowerCase();
 		if(email.match(/[\s\w\d]+@[\s\w\d]+/g)){
@@ -33,7 +65,9 @@ $(document).ready(function() {
 					var address = keys.address;
 					var wif = keys.wif;
 					var pubkey = keys.pubkey;
-					var privkeyaes = CryptoJS.AES.encrypt(keys.wif, pass);
+					
+					//var privkeyaes = CryptoJS.AES.encrypt(keys.wif, pass);
+					var privkeyaes = encrypt(keys.wif);
 
 					$("#walletKeys .walletSegWitRS").addClass("hidden");
 					if($("#walletSegwit").is(":checked")){
@@ -339,7 +373,8 @@ $(document).ready(function() {
 		} else {
 			$("#aes256passStatus").removeClass("hidden");
 		}
-		$("#newPrivKeyEnc").val(CryptoJS.AES.encrypt(coin.wif, $("#aes256pass").val())+'');
+		//$("#newPrivKeyEnc").val(CryptoJS.AES.encrypt(coin.wif, $("#aes256pass").val())+'');
+		$("#newPrivKeyEnc").val(encrypt(coin.wif));
 	});
 	
 	$("#newPaperwalletBtn").click(function(){
