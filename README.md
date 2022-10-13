@@ -32,5 +32,6 @@ Coinb.in supports a number of key features such as:
 - Bech32 address support.
 - Fee calculator - https://coinb.in/#fees
 - Transaction rebuild support for RBF and double spending.
+- Hello world!
 
 Donate to 33tht1bKDgZVxb39MnZsWa8oxHXHvUYE4G to see more development!
